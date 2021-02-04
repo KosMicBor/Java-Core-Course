@@ -7,6 +7,14 @@
     <groupId>KosMicBor</groupId>
     <artifactId>KosMicBor.ru</artifactId>
     <version>0.1_Alfa</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>15</maven.compiler.source>
