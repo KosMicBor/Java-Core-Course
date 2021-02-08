@@ -4,6 +4,8 @@ import javax.xml.namespace.QName;
 import java.util.Scanner;
 
 public class Homework_Practice_GuessNumberGame {
+    private static int maxValue = 9;
+    private static final int zeroValue = 0;
 
     public static void main(String[] args) {
         // Задание 1. Написать программу, которая загадывает случайное число от 0 до 9 и пользователю дается 3 попытки
@@ -26,8 +28,7 @@ public class Homework_Practice_GuessNumberGame {
      * @return random int Number from 0 to 9
      */
     private static int randomNumberGenerator(){
-        int randomValue = 0;
-        int maxValue = 9;
+        int randomValue = zeroValue;
         randomValue = (int)(Math.random()*maxValue);
         return randomValue;
     }
@@ -37,12 +38,11 @@ public class Homework_Practice_GuessNumberGame {
      * @return int value from console
      */
     private static int getValueFromUser (){
-
         Scanner sc = new Scanner(System.in);
         System.out.print("Введите число от 0 до 9: ");
         int userValue = sc.nextInt();
 
-        if (userValue > 9 || userValue < 0) {
+        if (userValue > maxValue || userValue < zeroValue) {
             System.out.println("Нужно вводить только числа от 0 до 9!");
             getValueFromUser();
         }
@@ -56,8 +56,8 @@ public class Homework_Practice_GuessNumberGame {
      */
     private static void CompareNumbers (int hiddenNumber){
         int tryCount = 3;
-        int userAnswer = 0;
-        final int zeroValue = 0;
+        int userAnswer = zeroValue;
+
         while (tryCount != zeroValue) {
             userAnswer = getValueFromUser();
             if (userAnswer == hiddenNumber) {
@@ -92,8 +92,8 @@ public class Homework_Practice_GuessNumberGame {
         if (userChoice == 1){
             init();
 
-        } else if (userChoice == 0){
-            System.exit(0);
+        } else if (userChoice == zeroValue){
+            System.exit(zeroValue);
         }
     }
 }

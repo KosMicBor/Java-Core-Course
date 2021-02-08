@@ -15,16 +15,18 @@ public class Homework_Practice_GuessWordGame {
         String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "broccoli", "carrot", "cherry",
                 "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea", "peanut",
                 "pear", "pepper", "pineapple", "pumpkin", "potato"};
+        int WORDSLENGTH = 24;
         int hiddenWordIndex = genIntValue();
         String hiddenWord = words[hiddenWordIndex];
         String userWord = getUserWord();
-        CompareWords(hiddenWord, userWord);
+        compareWords(hiddenWord, userWord);
 
     }
 
     private static int genIntValue (){
         int randomValue = 0;
-        int maxValue = 24;
+        int wordsLength = 24;
+        int maxValue = wordsLength;
         randomValue = (int)(Math.random()*maxValue);
         return randomValue;
     }
@@ -41,7 +43,7 @@ public class Homework_Practice_GuessWordGame {
         return userWord;
     }
 
-    private static void CompareWords(String OuterHiddenWord, String OuterUserWord){
+    private static void compareWords(String OuterHiddenWord, String OuterUserWord){
 
         char[] arrayMatchedChars = {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'};
         int HiddenWordLength = OuterHiddenWord.length() - 1;
