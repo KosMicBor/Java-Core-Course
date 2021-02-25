@@ -12,6 +12,8 @@ public class CompetitionApp {
     public static void main(String[] args) {
         int runDistance;
         float jumpHeight;
+        int wallType = 1;
+        int trackType = 0;
 
         PhysicalActions[] participantsArray = new PhysicalActions[3];
         participantsArray[0] = new Human("Nick", 28, 90, 500, 1.5f);
@@ -34,13 +36,13 @@ public class CompetitionApp {
             for (int j = 0; j < obstacleCourse.length; j++){
                 runDistance = obstacleCourse[j].getObstacleDistance();
                 jumpHeight =  obstacleCourse[j].getObstacleHeight();
-                if (obstacleCourse[j].typeOfObstacle() == 0){
+                if (obstacleCourse[j].typeOfObstacle() == trackType){
                     participantsArray[i].run(runDistance);
                    if (!participantsArray[i].getIsObstacleOvercome()){
                        System.out.println("Участник выбыл с дистанции");
                        break;
                    }
-                } else if (obstacleCourse[j].typeOfObstacle() == 1){
+                } else if (obstacleCourse[j].typeOfObstacle() == wallType){
                     participantsArray[i].jump(jumpHeight);
                     if (!participantsArray[i].getIsObstacleOvercome()){
                         System.out.println("Участник выбыл с дистанции");
