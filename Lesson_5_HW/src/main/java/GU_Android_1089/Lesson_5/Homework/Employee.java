@@ -1,4 +1,4 @@
-package GU_Android_1089.Lesson_5.Homework;
+package GU_Android_1089.Lesson_5.homework;
 
 public class Employee {
 
@@ -33,7 +33,7 @@ public class Employee {
         System.out.println();
     }
 
-    public boolean sortByAge(){
+    public boolean isAgeMoreThan40(){
 
         if (this.age > 40){
             return true;

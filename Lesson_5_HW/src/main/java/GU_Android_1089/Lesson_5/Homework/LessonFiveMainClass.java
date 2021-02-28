@@ -1,4 +1,4 @@
-package GU_Android_1089.Lesson_5.Homework;
+package GU_Android_1089.Lesson_5.homework;
 
 public class LessonFiveMainClass {
 
@@ -6,7 +6,7 @@ public class LessonFiveMainClass {
 
     public static void main(String[] args) {
         int arrSize = 5;
-        
+
         Employee employeeFirst = new Employee();
         employeeFirst.getInfo();
 
@@ -28,7 +28,7 @@ public class LessonFiveMainClass {
 
         for (int i = ZERO; i < empArray.length; i++) {
 
-            if (empArray[i].sortByAge()) {
+            if (empArray[i].isAgeMoreThan40()) {
                 empArray[i].getInfo();
             }
         }
