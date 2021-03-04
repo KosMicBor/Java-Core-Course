@@ -2,14 +2,14 @@ package java_core.gu_1089.lesson_7_hw;
 
 public class FeedingCatApp {
     public static void main(String[] args) {
-    Cat firstCat = new Cat("Fluffy", 5);
-    Plate publicPlate = new Plate(110);
+        Cat firstCat = new Cat("Fluffy", 5);
+        Plate publicPlate = new Plate(110);
 
-    firstCat.eat(publicPlate);
+        firstCat.eat(publicPlate);
 
-    System.out.println("=================================");
+        System.out.println("=================================");
 
-    Cat[] catsArray = new Cat[5];
+        Cat[] catsArray = new Cat[5];
         catsArray[0] = new Cat("Kitty", 15);
         catsArray[1] = new Cat("Jackson", 30);
         catsArray[2] = new Cat("Bubble", 50);
@@ -18,10 +18,10 @@ public class FeedingCatApp {
 
         for (Cat elem: catsArray) {
             elem.eat(publicPlate);
-            System.out.println(elem.getSatiety());
+            System.out.println(elem.IsCatFull());
         }
 
-    publicPlate.addFood(100);
+        publicPlate.addFood(110);
 
     }
 }

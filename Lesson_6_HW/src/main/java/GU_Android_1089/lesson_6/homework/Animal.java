@@ -1,12 +1,12 @@
 package GU_Android_1089.lesson_6.homework;
 
 abstract class  Animal {
-    final int ZERO = 0;
+    protected final int ZERO = 0;
 
     private static int animalCount = 0;
 
-    String name;
-    String color;
+    protected String name;
+    protected String color;
 
     public Animal(String name, String color) {
         this.name = name;
