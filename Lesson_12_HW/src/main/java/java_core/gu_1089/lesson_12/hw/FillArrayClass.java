@@ -64,6 +64,7 @@ public class FillArrayClass extends Thread implements Runnable {
         ExecutorService service = Executors.newFixedThreadPool(2);
 
         service.execute(new Runnable() {
+            
             @Override
             public void run() {
                 synchronized (this) {
@@ -73,9 +74,11 @@ public class FillArrayClass extends Thread implements Runnable {
         });
 
         service.execute(new Runnable() {
+
             @Override
             public void run() {
                 synchronized (this) {
+
                     try {
                         while (lockReset != ONE_HALF_READY){
                             this.wait();
@@ -83,7 +86,6 @@ public class FillArrayClass extends Thread implements Runnable {
                     } catch (InterruptedException e){
                         System.out.println("Ups, \"wait\" didn't work");
                     }
-
 
                     FillArrayClass.this.HalfArrFilling(arr, secondHalfArr, HALF, SIZE);
                     this.notify();
@@ -119,13 +121,13 @@ public class FillArrayClass extends Thread implements Runnable {
      */
     private synchronized void HalfArrFilling (float[] mainArr, float[] halfArr, int fromNum, int toNum){
         long timePoint = System.currentTimeMillis();
-        ++lockReset;
 
         for (int i = fromNum; i < toNum; i++) {
             halfArr[i] = (float) (mainArr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5)
                     * Math.cos(0.4f + i / 2));
         }
 
+        ++lockReset;
         System.out.printf("время выполнения метода: %d мc.%n", System.currentTimeMillis() - timePoint);
     }
 }
