@@ -7,8 +7,9 @@ import java.util.concurrent.Executors;
 public class FillArrayClass extends Thread implements Runnable {
     private static final int SIZE = 10000000;
     private static final int HALF = SIZE / 2;
+    private Object lock = new Object();
     private static final int ZERO_VAL = 0;
-    private static final int HALVES_QUANTITY = 2;
+    private static final int HALVES_READY = 2;
     private static final int ONE_HALF_READY = 1;
 
     private volatile int lockReset = 0;
@@ -20,7 +21,7 @@ public class FillArrayClass extends Thread implements Runnable {
     @Override
     public void run() {
         fullArrayFilling();
-        HalfArrayFilling();
+        halfArrayFilling();
     }
 
     /**
@@ -49,7 +50,7 @@ public class FillArrayClass extends Thread implements Runnable {
      * This method fills and calculates new array's values by dividing it to two halves. Also it counts
      * time of method's processes
      */
-    private void HalfArrayFilling (){
+    private void halfArrayFilling(){
         long timePoint;
 
         for (int i = 0; i < SIZE; i++) {
@@ -64,11 +65,21 @@ public class FillArrayClass extends Thread implements Runnable {
         ExecutorService service = Executors.newFixedThreadPool(2);
 
         service.execute(new Runnable() {
-            
+
             @Override
             public void run() {
-                synchronized (this) {
-                    FillArrayClass.this.HalfArrFilling(arr, firstHalfArr, ZERO_VAL, HALF);
+                synchronized (lock) {
+
+                   try {
+                       while (lockReset != ZERO_VAL){
+                           lock.wait();
+                       }
+                        FillArrayClass.this.halfArrFilling(arr, firstHalfArr, ZERO_VAL, HALF);
+                       lock.notify();
+                   } catch (InterruptedException e){
+                        System.out.println("Ups, \"wait\" didn't work");
+                   }
+
                 }
             }
         });
@@ -77,38 +88,41 @@ public class FillArrayClass extends Thread implements Runnable {
 
             @Override
             public void run() {
-                synchronized (this) {
+                synchronized (lock) {
 
                     try {
+
                         while (lockReset != ONE_HALF_READY){
-                            this.wait();
+                            lock.wait();
                         }
+
+                    FillArrayClass.this.halfArrFilling(arr, secondHalfArr, HALF, SIZE);
+                        lock.notify();
                     } catch (InterruptedException e){
                         System.out.println("Ups, \"wait\" didn't work");
                     }
-
-                    FillArrayClass.this.HalfArrFilling(arr, secondHalfArr, HALF, SIZE);
-                    this.notify();
                 }
             }
         });
 
         service.shutdown();
 
-        synchronized (this) {
+        synchronized (lock) {
 
-            while(lockReset != HALVES_QUANTITY){
+            try{
 
-                try{
-                    this.wait();
-                } catch (InterruptedException e){
-                    System.out.println("Ups, \"wait\" didn't work");
+                while(lockReset != HALVES_READY) {
+                    lock.wait();
                 }
+
+                timePoint = System.currentTimeMillis();
+                System.arraycopy(firstHalfArr, ZERO_VAL, arr, ZERO_VAL, HALF);
+                System.arraycopy(secondHalfArr, HALF, arr, HALF, HALF);
+                System.out.printf("время склейки массива: %d мc.%n", System.currentTimeMillis() - timePoint);
+                lock.notify();
+            } catch (InterruptedException e){
+                System.out.println("Ups, \"wait\" didn't work");
             }
-            timePoint = System.currentTimeMillis();
-            System.arraycopy(firstHalfArr, ZERO_VAL, arr, ZERO_VAL, HALF);
-            System.arraycopy(secondHalfArr, HALF, arr, HALF, HALF);
-            System.out.printf("время склейки массива: %d мc.%n", System.currentTimeMillis() - timePoint);
         }
     }
 
@@ -119,7 +133,7 @@ public class FillArrayClass extends Thread implements Runnable {
      * @param fromNum index from which the halfArr will fill
      * @param toNum index to which the halfArr will fill
      */
-    private synchronized void HalfArrFilling (float[] mainArr, float[] halfArr, int fromNum, int toNum){
+    private synchronized void halfArrFilling(float[] mainArr, float[] halfArr, int fromNum, int toNum){
         long timePoint = System.currentTimeMillis();
 
         for (int i = fromNum; i < toNum; i++) {
@@ -127,7 +141,7 @@ public class FillArrayClass extends Thread implements Runnable {
                     * Math.cos(0.4f + i / 2));
         }
 
-        ++lockReset;
         System.out.printf("время выполнения метода: %d мc.%n", System.currentTimeMillis() - timePoint);
+        ++lockReset;
     }
 }
